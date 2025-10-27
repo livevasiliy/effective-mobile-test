@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Уникальный идентификатор задачи
+  title:
+    type: string
+    description: Название задачи
+  description:
+    type: string
+    description: Описание задачи
+    nullable: true
+  status_id:
+    type: integer
+    description: ID статуса задачи
+  status:
+    $ref: './TaskStatus.yaml'
+required:
+  - id
+  - title
+  - status_id

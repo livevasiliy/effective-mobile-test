@@ -1,0 +1,11 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Уникальный идентификатор статуса
+  name:
+    type: string
+    description: Название статуса
+required:
+  - id
+  - name

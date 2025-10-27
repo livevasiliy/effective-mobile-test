@@ -1,0 +1,293 @@
+openapi: 3.0.2
+info:
+  title: Task API
+  description: API для управления задачами (Tasks)
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Локальный сервер для разработки
+tags:
+  - name: Tasks
+    description: Операции с задачами
+paths:
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Получить список всех задач
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: './TaskController/components/schemas/Task.yaml'
+
+    post:
+      tags:
+        - Tasks
+      summary: Создать новую задачу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+          text/html:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+      responses:
+        '201':
+          description: Задача успешно создана
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: './TaskController/components/schemas/Task.yaml'
+        '302':
+          description: >
+            Ошибка валидации (редирект при Content-Type ≠ application/json).
+            Клиент получает HTML-редирект.
+            На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Redirecting...</body></html>"
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Validation failed.
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+
+  /tasks/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Идентификатор задачи
+        schema:
+          type: integer
+    get:
+      tags:
+        - Tasks
+      summary: Получить информацию о конкретной задаче
+      parameters:
+        - name: id
+          in: path
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: './TaskController/components/schemas/Task.yaml'
+        '404':
+          description: Задача не найдена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No query results for model [App\\Models\\Task] {id}"
+    put:
+      tags:
+        - Tasks
+      summary: Обновить задачу
+      parameters:
+        - name: id
+          in: path
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+          multipart/form-data:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+      responses:
+        '200':
+          description: Задача успешно обновлена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: './TaskController/components/schemas/Task.yaml'
+        '302':
+          description: >
+            Ошибка валидации (редирект при Content-Type ≠ application/json).
+            Клиент получает HTML-редирект.
+            На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Redirecting...</body></html>"
+        '404':
+          description: Задача не найдена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No query results for model [App\\Models\\Task] {id}"
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Validation failed.
+                  errors:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+    patch:
+      tags:
+        - Tasks
+      summary: Частичное обновление задачи
+      parameters:
+        - name: id
+          in: path
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+          multipart/form-data:
+            schema:
+              $ref: './TaskController/components/schemas/TaskRequest.yaml'
+      responses:
+        '200':
+          description: Задача успешно обновлена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  task:
+                    $ref: './TaskController/components/schemas/Task.yaml'
+        '302':
+          description: >
+            Ошибка валидации (редирект при Content-Type ≠ application/json).
+            Клиент получает HTML-редирект.
+            На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Redirecting...</body></html>"
+        '404':
+            description: Задача не найдена
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "No query results for model [App\\Models\\Task] {id}"
+        '422':
+            description: Ошибка валидации данных
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: false
+                    message:
+                      type: string
+                      example: Validation failed.
+                    errors:
+                      type: object
+                      additionalProperties:
+                        type: array
+                        items:
+                          type: string
+    delete:
+      tags:
+        - Tasks
+      summary: Удалить задачу
+      parameters:
+        - name: id
+          in: path
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Задача успешно удалена
+
+        '404':
+          description: Задача не найдена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No query results for model [App\\Models\\Task] {id}"
+components:
+  schemas:
+    Task:
+      $ref: './TaskController/components/schemas/Task.yaml'
+    TaskRequest:
+      $ref: './TaskController/components/schemas/TaskRequest.yaml'
+    TaskStatus:
+      $ref: './TaskController/components/schemas/TaskStatus.yaml'

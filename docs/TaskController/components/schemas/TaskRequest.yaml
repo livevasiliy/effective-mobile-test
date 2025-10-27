@@ -1,0 +1,17 @@
+type: object
+properties:
+  title:
+    type: string
+    description: Название задачи
+    maxLength: 255
+  description:
+    type: string
+    description: Описание задачи
+    maxLength: 255
+    nullable: true
+  status_id:
+    type: integer
+    description: ID статуса задачи
+required:
+  - title
+  - status_id

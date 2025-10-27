@@ -1,0 +1,418 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "description" : "API для управления задачами (Tasks)",
+    "title" : "Task API",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "description" : "Локальный сервер для разработки",
+    "url" : "http://localhost:8000/api"
+  } ],
+  "tags" : [ {
+    "description" : "Операции с задачами",
+    "name" : "Tasks"
+  } ],
+  "paths" : {
+    "/tasks" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_200_response"
+                }
+              }
+            },
+            "description" : "Успешный запрос"
+          }
+        },
+        "summary" : "Получить список всех задач",
+        "tags" : [ "Tasks" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            },
+            "text/html" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_201_response"
+                }
+              }
+            },
+            "description" : "Задача успешно создана"
+          },
+          "302" : {
+            "content" : {
+              "text/html" : {
+                "schema" : {
+                  "example" : "<html><body>Redirecting...</body></html>",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "Ошибка валидации (редирект при Content-Type ≠ application/json). Клиент получает HTML-редирект. На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.\n"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_422_response"
+                }
+              }
+            },
+            "description" : "Ошибка валидации данных"
+          }
+        },
+        "summary" : "Создать новую задачу",
+        "tags" : [ "Tasks" ]
+      }
+    },
+    "/tasks/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "description" : "ID задачи",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Задача успешно удалена"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks__id__delete_404_response"
+                }
+              }
+            },
+            "description" : "Задача не найдена"
+          }
+        },
+        "summary" : "Удалить задачу",
+        "tags" : [ "Tasks" ]
+      },
+      "get" : {
+        "parameters" : [ {
+          "description" : "ID задачи",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_201_response"
+                }
+              }
+            },
+            "description" : "Успешный запрос"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks__id__delete_404_response"
+                }
+              }
+            },
+            "description" : "Задача не найдена"
+          }
+        },
+        "summary" : "Получить информацию о конкретной задаче",
+        "tags" : [ "Tasks" ]
+      },
+      "patch" : {
+        "parameters" : [ {
+          "description" : "ID задачи",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            },
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_201_response"
+                }
+              }
+            },
+            "description" : "Задача успешно обновлена"
+          },
+          "302" : {
+            "content" : {
+              "text/html" : {
+                "schema" : {
+                  "example" : "<html><body>Redirecting...</body></html>",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "Ошибка валидации (редирект при Content-Type ≠ application/json). Клиент получает HTML-редирект. На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.\n"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks__id__delete_404_response"
+                }
+              }
+            },
+            "description" : "Задача не найдена"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_422_response"
+                }
+              }
+            },
+            "description" : "Ошибка валидации данных"
+          }
+        },
+        "summary" : "Частичное обновление задачи",
+        "tags" : [ "Tasks" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "description" : "ID задачи",
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            },
+            "multipart/form-data" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_201_response"
+                }
+              }
+            },
+            "description" : "Задача успешно обновлена"
+          },
+          "302" : {
+            "content" : {
+              "text/html" : {
+                "schema" : {
+                  "example" : "<html><body>Redirecting...</body></html>",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "Ошибка валидации (редирект при Content-Type ≠ application/json). Клиент получает HTML-редирект. На сервере в сессии создаётся ключ `errors` со списком сообщений валидации.\n"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks__id__delete_404_response"
+                }
+              }
+            },
+            "description" : "Задача не найдена"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_tasks_get_422_response"
+                }
+              }
+            },
+            "description" : "Ошибка валидации данных"
+          }
+        },
+        "summary" : "Обновить задачу",
+        "tags" : [ "Tasks" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Task" : {
+        "properties" : {
+          "id" : {
+            "description" : "Уникальный идентификатор задачи",
+            "type" : "integer"
+          },
+          "title" : {
+            "description" : "Название задачи",
+            "type" : "string"
+          },
+          "description" : {
+            "description" : "Описание задачи",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "status_id" : {
+            "description" : "ID статуса задачи",
+            "type" : "integer"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/TaskStatus"
+          }
+        },
+        "required" : [ "id", "status_id", "title" ],
+        "type" : "object"
+      },
+      "TaskRequest" : {
+        "properties" : {
+          "title" : {
+            "description" : "Название задачи",
+            "maxLength" : 255,
+            "type" : "string"
+          },
+          "description" : {
+            "description" : "Описание задачи",
+            "maxLength" : 255,
+            "nullable" : true,
+            "type" : "string"
+          },
+          "status_id" : {
+            "description" : "ID статуса задачи",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "status_id", "title" ],
+        "type" : "object"
+      },
+      "TaskStatus" : {
+        "properties" : {
+          "id" : {
+            "description" : "Уникальный идентификатор статуса",
+            "type" : "integer"
+          },
+          "name" : {
+            "description" : "Название статуса",
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "_tasks_get_200_response" : {
+        "properties" : {
+          "tasks" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Task"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "_tasks_get_201_response" : {
+        "properties" : {
+          "task" : {
+            "$ref" : "#/components/schemas/Task"
+          }
+        },
+        "type" : "object"
+      },
+      "_tasks_get_422_response" : {
+        "properties" : {
+          "success" : {
+            "example" : false,
+            "type" : "boolean"
+          },
+          "message" : {
+            "example" : "Validation failed.",
+            "type" : "string"
+          },
+          "errors" : {
+            "additionalProperties" : {
+              "items" : {
+                "type" : "string"
+              },
+              "type" : "array"
+            },
+            "type" : "object"
+          }
+        },
+        "type" : "object"
+      },
+      "_tasks__id__delete_404_response" : {
+        "properties" : {
+          "message" : {
+            "example" : "No query results for model [App\\Models\\Task] {id}",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}
