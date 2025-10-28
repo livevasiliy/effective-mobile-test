@@ -34,7 +34,7 @@
 
 ### Автоматизированный запуск
 ```shell
-make install
+make setup
 ```
 Проект будет доступен по адресу `http://localhost:8080`
 
